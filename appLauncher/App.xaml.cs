@@ -21,6 +21,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using GoogleAnalytics;
 
 namespace appLauncher
 {
@@ -30,8 +31,17 @@ namespace appLauncher
     sealed partial class App : Application
     {
         public static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
-
+        public static Tracker AnalyticsTracker {get;set;}
        
+        private void  SetupTracker()
+        {
+            AnalyticsTracker = AnalyticsManager.Current.CreateTracker("UA-117113663-5");
+            AnalyticsManager.Current.ReportUncaughtExceptions = true;
+            AnalyticsManager.Current.IsEnabled = true;
+            AnalyticsManager.Current.AutoAppLifetimeMonitoring = true;
+            AnalyticsManager.Current.AutoTrackNetworkConnectivity = true;
+            AnalyticsManager.Current.BustCache = true;
+        }
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -51,6 +61,7 @@ namespace appLauncher
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            SetupTracker();
             GlobalVariables.bgimagesavailable = (App.localSettings.Values["bgImageAvailable"]==null)?false:true;
            //Extends view into status bar/title bar, depending on the device used.
             var appView = ApplicationView.GetForCurrentView();

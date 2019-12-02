@@ -1,0 +1,39 @@
+﻿<Page
+    x:Class="appLauncher.FontAndColor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:appLauncher"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Font Size" />
+            <ComboBox />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Foreground Color" />
+            <ComboBox />
+          </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2">
+            <TextBlock Text="Background Color" />
+            <ComboBox />
+           </StackPanel>
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="3">
+            <TextBlock Text="Opacity" />
+            <Slider Minimum="0" Maximum="100" StepFrequency="5" />
+        </StackPanel>
+        <Canvas Grid.Row="4" Height="100" Width="100" Background="{Binding Backcolor}">
+            <TextBlock Text="This is a Test" />
+        </Canvas> 
+    </Grid>
+</Page>

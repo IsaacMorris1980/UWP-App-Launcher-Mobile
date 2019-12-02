@@ -11,7 +11,6 @@ using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Nito.AsyncEx;
 using System.IO;
 
 namespace appLauncher
@@ -120,9 +119,7 @@ namespace appLauncher
                                     if (items.DisplayName == y)
                                     {
                                         BackgroundImages bi = new BackgroundImages();
-                                        bi.Filename = items.DisplayName;
-                                        bi.Bitmapimage = new BitmapImage(new Uri(items.Path));
-                                        backgroundImage.Add(bi);
+                                        await bi.FileNameAsync(items.Name);
                                     }
                                 }
                             }
@@ -132,8 +129,7 @@ namespace appLauncher
                             foreach (var items in filesInFolder)
                             {
                                 BackgroundImages bi = new BackgroundImages();
-                                bi.Filename = items.DisplayName;
-                                bi.Bitmapimage = new BitmapImage(new Uri(items.Path));
+                                await bi.FileNameAsync(items.Name);                               
                                 backgroundImage.Add(bi);
 
 
@@ -153,8 +149,7 @@ namespace appLauncher
                     foreach (var items in filesInFolder)
                     {
                         BackgroundImages bi = new BackgroundImages();
-                        bi.Filename = items.DisplayName;
-                        bi.Bitmapimage = new BitmapImage(new Uri(items.Path));
+                        await bi.FileNameAsync(items.Name);
                         backgroundImage.Add(bi);
 
                     }
@@ -166,7 +161,7 @@ namespace appLauncher
         public static async Task SaveImageOrder()
         {
                 List<string> imageorder = new List<string>();
-                imageorder = (from x in backgroundImage select x.Filename).ToList();
+                imageorder = (from x in backgroundImage select x.FileDisplayName).ToList();
                 StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.CreateFileAsync("images.txt", CreationCollisionOption.ReplaceExisting);
                 await FileIO.WriteLinesAsync(item, imageorder);
 

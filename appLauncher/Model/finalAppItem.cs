@@ -19,8 +19,8 @@ namespace appLauncher.Model
 	/// </summary>
 	public class finalAppItem
 	{
-		public AppListEntry appEntry { get; set; }
-		public BitmapImage appLogo { get; set; }
+        public AppListEntry appEntry { get; set; }
+        public BitmapImage appLogo { get; set; }
             
     }
 
