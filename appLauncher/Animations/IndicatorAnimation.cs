@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Shapes;
 
 namespace appLauncher.Animations
@@ -10,5 +11,6 @@ namespace appLauncher.Animations
     public class IndicatorAnimation
     {
         public static Ellipse oldAnimatedEllipse;
+       
     }
 }

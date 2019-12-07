@@ -14,16 +14,30 @@
             <ColumnDefinition Width="150" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0">
             <Button Content="Add Image" HorizontalAlignment="Center" VerticalAlignment="Top" />
             <Button Content="Remove Image" HorizontalAlignment="Center" VerticalAlignment="Bottom" />
         </StackPanel>
-        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+        <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1">
             <ListView ItemsSource="{Binding AllBackgroundImage}">
                 <DataTemplate x:DataType="Model:BackgroundImages">
-                    <Canvas Background="{x:Bind BackMaskedBrush}" />
+                    <Canvas Background="{x:Bind GetBackGroundImageBrush}" />
                 </DataTemplate>
             </ListView>
         </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+            <TextBox PlaceholderText="Please select an image above for preview" Text="{Binding PreviewText}" />
+            <ComboBox ItemsSource="{Binding OverlayColors}" >
+                <ToolTipService.ToolTip>
+                    <TextBlock Text="Color will apply to all background images currently" />
+                </ToolTipService.ToolTip>
+            </ComboBox>
+            <Button Command="{Binding SaveChange}" CommandParameter="{Binding SelectedItem}" Content="Save overlay on image" />
+        </StackPanel>
+        <Canvas Grid.Column="1" Grid.Row="1" Background="{Binding PreviewImage}" Height="100" />
     </Grid>
 </Page>

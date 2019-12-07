@@ -27,7 +27,8 @@ namespace appLauncher
         public static bool bgimagesavailable { get; set; }
 
         private static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-        public static ObservableCollection<BackgroundImages> backgroundImage { get; set; } = new ObservableCollection<BackgroundImages>();
+        public static PagniationAsyncObservableCollection<BackgroundImages> backgroundImage { get; set; } = new PagniationAsyncObservableCollection<BackgroundImages>();
+        public static PagniationAsyncObservableCollection<AppItems> AllItems { get; set; } = new PagniationAsyncObservableCollection<AppItems>();
         public static Point startingpoint { get; set; }
 
 
@@ -110,7 +111,7 @@ namespace appLauncher
                         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
                         var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);
                         var filesInFolder = await backgroundImageFolder.GetFilesAsync();
-                        if (images.Count() > 0)
+                        if (images.Count > 0)
                         {
                             foreach (string y in images)
                             {
@@ -119,7 +120,7 @@ namespace appLauncher
                                     if (items.DisplayName == y)
                                     {
                                         BackgroundImages bi = new BackgroundImages();
-                                        await bi.FileNameAsync(items.Name);
+                                        await bi.FileNameAsync(items);
                                     }
                                 }
                             }
@@ -129,7 +130,7 @@ namespace appLauncher
                             foreach (var items in filesInFolder)
                             {
                                 BackgroundImages bi = new BackgroundImages();
-                                await bi.FileNameAsync(items.Name);                               
+                                await bi.FileNameAsync(items);                               
                                 backgroundImage.Add(bi);
 
 
@@ -149,7 +150,7 @@ namespace appLauncher
                     foreach (var items in filesInFolder)
                     {
                         BackgroundImages bi = new BackgroundImages();
-                        await bi.FileNameAsync(items.Name);
+                        await bi.FileNameAsync(items);
                         backgroundImage.Add(bi);
 
                     }

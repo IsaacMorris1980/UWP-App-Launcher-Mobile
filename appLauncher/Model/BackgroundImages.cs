@@ -1,6 +1,7 @@
 ﻿using appLauncher.Brushes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,30 +14,64 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace appLauncher.Model
 {
-   public class BackgroundImages
+    public class BackgroundImages : ModelBase
     {
-        private IRandomAccessStream backimage;
+      
         public StorageItemThumbnail thumbnail;
-        public string FileDisplayName;
+        private string filedisplayname;
+        private string fullname;
+        
        
-        public MaskedBrush BackGroundImageBrush
+
+     public BackgroundImages()
         {
-            get {
-                MaskedBrush mb = new MaskedBrush(backimage);
-                mb.overlaycolor = Colors.Transparent;
-                return mb;
+            
+        }
+
+        public string FileDisplayName
+        {
+            get { return filedisplayname; }
+            set { filedisplayname = value; }
+        }
+       
+        
+            
+        
+              public async Task FileNameAsync(StorageFile sf)
+        {
+            FileDisplayName = sf.DisplayName;
+            fullname = sf.Name;
+            thumbnail = await sf.GetThumbnailAsync(ThumbnailMode.PicturesView, 10, ThumbnailOptions.ResizeThumbnail);
+            await  Convert(await sf.OpenAsync(FileAccessMode.Read));
+        }
+        private Color forgroundColor = Colors.Transparent;
+        private Color backgroundColor = Colors.Transparent;
+
+        public byte[] ImageBytes { get; set; }
+        public Color BackgroundColor { get { return backgroundColor; } set { backgroundColor = value; } } //not used by background images
+        public Color ForgroundColor { get { return forgroundColor; } set { forgroundColor = value; OnPropertyChanged("GetBackGoundImageBrush"); } }
+        public async Task Convert(IRandomAccessStream s)
+        {
+            using (var dr = new DataReader(s.GetInputStreamAt(0)))
+            {
+
+                var bytes = new byte[s.Size];
+                await dr.LoadAsync((uint)s.Size);
+                dr.ReadBytes(bytes);
+                ImageBytes = bytes;
+                await s.FlushAsync();
+                s.Dispose();
+                OnPropertyChanged("GetBackGroundImageBrush");
             }
         }
-        public async Task FileNameAsync(string filename)
+        public MaskedBrush GetBackGroundImageBrush()
         {
-            StorageFolder storageFolder =await ApplicationData.Current.LocalFolder.CreateFolderAsync("BackGroundImage",CreationCollisionOption.OpenIfExists);
-            StorageFile sf = await storageFolder.GetFileAsync(filename);
-            FileDisplayName = sf.DisplayName;
-            thumbnail = await sf.GetThumbnailAsync(ThumbnailMode.PicturesView, 10, ThumbnailOptions.ResizeThumbnail);
-            backimage = await sf.OpenAsync(FileAccessMode.Read);
+            MaskedBrush mb = new MaskedBrush(ImageBytes);
+            mb.overlaycolor = this.ForgroundColor;
+            return mb;
         }
-       //private BitmapImage bitmapimage;
-       //public string Filename { get => filename; set => filename = value; }
-       //public BitmapImage Bitmapimage { get => bitmapimage; set => bitmapimage = value; }
+        //private BitmapImage bitmapimage;
+        //public string Filename { get => filename; set => filename = value; }
+        //public BitmapImage Bitmapimage { get => bitmapimage; set => bitmapimage = value; }
     }
 }

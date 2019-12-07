@@ -33,6 +33,7 @@ namespace appLauncher
         public static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
         public static Tracker AnalyticsTracker {get;set;}
        
+       
         private void  SetupTracker()
         {
             AnalyticsTracker = AnalyticsManager.Current.CreateTracker("UA-117113663-5");

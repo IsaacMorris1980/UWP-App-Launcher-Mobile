@@ -15,33 +15,17 @@ namespace appLauncher.ViewModels
 {
    public class SettingViewViewModel : ViewModelBase
     {
+        private List<string> logginginfo = new List<string>();
         public SettingViewViewModel()
         {
-           var a =  loadbackgroundimages();
-            a.Wait();
+            logginginfo.Clear();
+            logginginfo.Add("SettingsView");
+            base.Logging("screen", logginginfo);
         }
         
         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-        public ObservableCollection<BackgroundImages> backs; 
-        public async Task loadbackgroundimages()
-        {
-           StorageFolder storageFolder = await localFolder.CreateFolderAsync("BackGroundImages",CreationCollisionOption.OpenIfExists);
-            var items = await storageFolder.GetItemsAsync(0, 1);
-            List<BackgroundImages> lbi = new List<BackgroundImages>();
-            if (items.Any())
-            {
-                List<BackgroundImages> li = new List<BackgroundImages>();
-                var a = await storageFolder.GetFilesAsync();
-                foreach (StorageFile item in a)
-                {
-                    BackgroundImages bi = new BackgroundImages();
-                  await bi.FileNameAsync(item.Name);
-                    lbi.Add(bi);
-                }
-                backs = new ObservableCollection<BackgroundImages>(lbi);
-                OnproperyChanged("backs");
-            }
-        }
+        
+        
         private async void ImageButton_Click(object sender, RoutedEventArgs e)
         {
             var picker = new Windows.Storage.Pickers.FileOpenPicker();
@@ -77,13 +61,12 @@ namespace appLauncher.ViewModels
                     foreach (StorageFile item in file)
                     {
                         BackgroundImages bi = new BackgroundImages();
-                        await bi.FileNameAsync(item.Name);
+                        await bi.FileNameAsync(item);
                         bool exits = filesInFolder.Any(x => x.DisplayName == item.DisplayName);
                         if (!exits)
                         {
-                            backs.Add(bi);
-                            OnproperyChanged("backs");
-                            await item.CopyAsync(backgroundImageFolder);
+                            GlobalVariables.backgroundImage.Add(bi);
+                           await item.CopyAsync(backgroundImageFolder);
                         }
 
 
@@ -94,9 +77,8 @@ namespace appLauncher.ViewModels
                     foreach (var item in file)
                     {
                         BackgroundImages bi = new BackgroundImages();
-                        await bi.FileNameAsync(item.Name);
-                        backs.Add(bi);
-                        OnproperyChanged("backs");
+                        await bi.FileNameAsync(item);
+                        GlobalVariables.backgroundImage.Add(bi);
                        await item.CopyAsync(backgroundImageFolder);
                     }
 
@@ -117,13 +99,13 @@ namespace appLauncher.ViewModels
             if (imagelist.SelectedIndex != -1)
             {
                 BackgroundImages bi = (BackgroundImages)imagelist.SelectedItem;
-                if (backs.Any(x => x.FileDisplayName== bi.FileDisplayName))
+                if (GlobalVariables.backgroundImage.Any(x => x.FileDisplayName== bi.FileDisplayName))
                 {
-                    var files = (from x in backs where x.FileDisplayName == bi.FileDisplayName select x).ToList();
+                    var files = (from x in GlobalVariables.backgroundImage where x.FileDisplayName == bi.FileDisplayName select x).ToList();
                     foreach (var item in files)
                     {
-                        backs.Remove(item);
-                        OnproperyChanged("backs");
+                       GlobalVariables.backgroundImage.Remove(item);
+                       
                     }
                 }
                 var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);

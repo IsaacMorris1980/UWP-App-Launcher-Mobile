@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,14 +9,19 @@ using Windows.UI;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading;
+using System.IO;
 
 namespace appLauncher.Brushes
 {
     public sealed class MaskedBrush : XamlCompositionBrushBase
     {
-        public MaskedBrush(IRandomAccessStream stream)
+        public MaskedBrush(byte[] stream)
         {
-            this.stream = stream;
+            this.stream = stream.AsBuffer().AsStream().AsRandomAccessStream();
+            base.FallbackColor = Colors.Transparent;
+            
         }
         private IRandomAccessStream stream; 
         private CompositionMaskBrush _maskedbrush;
@@ -26,9 +32,10 @@ namespace appLauncher.Brushes
             Compositor compositor = Window.Current.Compositor;
             CompositionColorBrush colorbrush;
             // Use LoadedImageSurface API to get ICompositionSurface from image uri provided
-            colorbrush = compositor.CreateColorBrush((overlaycolor!=null)?Colors.Red:overlaycolor);
+            colorbrush = compositor.CreateColorBrush((overlaycolor==null)?this.FallbackColor:overlaycolor);
             _maskedbrush = compositor.CreateMaskBrush();
             _maskedbrush.Source = colorbrush;
+           
             LoadedImageSurface loadedSurface = LoadedImageSurface.StartLoadFromStream(stream);
             _maskedbrush.Mask = compositor.CreateSurfaceBrush(loadedSurface);
             CompositionBrush = _maskedbrush;

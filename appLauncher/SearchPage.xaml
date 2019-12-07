@@ -163,6 +163,7 @@
                                                 <VisualState x:Name="ButtonCollapsed" />
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
+                                        
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="Auto" />
@@ -230,8 +231,6 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-
-
             <ListView Grid.Row="1"
                       IsItemClickEnabled="True"
                       Name="QueriedAppsListView"

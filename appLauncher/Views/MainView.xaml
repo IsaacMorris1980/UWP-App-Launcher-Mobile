@@ -7,6 +7,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:Models="using:appLauncher.Model"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
@@ -14,10 +15,10 @@
             <RowDefinition />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <controls:RotatorTile x:Name="backimage" Grid.RowSpan="2" ItemsSource="{x:Bind local:GlobalVariables.backgroundImage}" Direction="Left" >
+        <controls:RotatorTile x:Name="backimage" Grid.RowSpan="2" ItemsSource="{x:Bind local:GlobalVariables.backgroundImage }" Direction="Left" >
             <controls:RotatorTile.ItemTemplate>
-                <DataTemplate >
-                    <Image Stretch="UniformToFill" Source="{Binding Bitmapimage}" />
+                <DataTemplate x:DataType="Models:BackgroundImages" >
+                    <Canvas Background="{x:Bind GetBackGroundImageBrush()}"  />
                 </DataTemplate>
             </controls:RotatorTile.ItemTemplate>
         </controls:RotatorTile>
