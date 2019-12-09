@@ -119,10 +119,12 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\AppColor.cs" />
     <Compile Include="Model\AppItems.cs" />
     <Compile Include="Model\BackgroundImages.cs" />
     <Compile Include="Model\finalAppItem.cs" />
     <Compile Include="Model\ModelBase.cs" />
+    <Compile Include="ViewModels\BackGroundImageViewModel.cs" />
     <Compile Include="ViewModels\SettingViewViewModel.cs" />
     <Compile Include="Views\settings.xaml.cs">
       <DependentUpon>settings.xaml</DependentUpon>

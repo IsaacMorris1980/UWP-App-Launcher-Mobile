@@ -17,12 +17,38 @@ namespace appLauncher.Model
         public DateTimeOffset installed { get; set; }
         public string fullName { get; set; }
         private Color forgroundColor = Colors.Transparent;
-        private Color backgroundColor = Colors.Transparent;
+        private Color backgroundColor = Colors.Blue;
 
         public byte[] ImageBytes { get; set; }
-        public Color BackgroundColor { get { return backgroundColor; } set { backgroundColor = value; OnPropertyChanged("BackgroundColor"); } } //not used by background images
+        public Color BackgroundColor
+        {
+            get {
+                if (backgroundColor==null)
+                {
+                    return Colors.Blue;
+                }
+                
+                return backgroundColor; }
+            set
+            {
+                if (value == null)
+                {
+                    backgroundColor = Colors.Blue;
+                    OnPropertyChanged("BackgroundColor");
+                    return;
+                }
+                backgroundColor = value;
+                OnPropertyChanged("BackgroundColor");
+            } } //not used by background images
 
-        public Color ForgroundColor { get { return forgroundColor; } set { forgroundColor = value; OnPropertyChanged("GetBackGoundImageBrush"); } }
+        public Color ForgroundColor { get {return forgroundColor; }
+            set
+            {
+                if (value==null)
+                {
+                    forgroundColor = Colors.Blue;
+                    OnPropertyChanged("GetAppLogoImageBrush");
+                }  forgroundColor = value; OnPropertyChanged("GetAppLogoImageBrush"); } }
         public async Task Convert(IRandomAccessStream s)
         {
             using (var dr = new DataReader(s.GetInputStreamAt(0)))

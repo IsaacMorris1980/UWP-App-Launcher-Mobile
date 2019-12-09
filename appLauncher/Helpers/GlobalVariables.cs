@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace appLauncher
 {
@@ -61,21 +62,10 @@ namespace appLauncher
             {
 
                 StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("collection.txt");
-                var apps = await FileIO.ReadLinesAsync(item);
-                if (apps.Count() > 1)
-                {
-                    foreach (string y in apps)
-                    {
-                        foreach (finalAppItem items in oc1)
-                        {
-                            if (items.appEntry.DisplayInfo.DisplayName == y)
-                            {
-                                oc.Add(items);
-                            }
-                        }
-                    }
-                }
-                AllApps.listOfApps = (oc.Count > 0) ? oc : new ObservableCollection<finalAppItem>(oc1);
+                var apps = await FileIO.ReadTextAsync(item);
+                List<AppItems> apps1 = JsonConvert.DeserializeObject<List<AppItems>>(apps);
+                AllItems = new PagniationAsyncObservableCollection<AppItems>(apps1);
+              
             }
 
 
@@ -86,10 +76,10 @@ namespace appLauncher
         public static async Task SaveCollectionAsync()
         {
            
-                List<finalAppItem> finals = AllApps.listOfApps.ToList();
-                var te = from x in finals select x.appEntry.DisplayInfo.DisplayName;
-                StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.CreateFileAsync("collection.txt", CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteLinesAsync(item, te);
+                List<AppItems> finals = AllItems.ToList();
+            var listapp = JsonConvert.SerializeObject(finals,Formatting.Indented);
+                 StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.CreateFileAsync("collection.txt", CreationCollisionOption.ReplaceExisting);
+                await FileIO.WriteTextAsync(item, listapp);
            
 
         }
@@ -106,36 +96,39 @@ namespace appLauncher
                 {
                     try
                     {
+                        
                         StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("images.txt");
-                        var images = await FileIO.ReadLinesAsync(item);
+                        var images = await FileIO.ReadTextAsync(item);
                         StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-                        var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);
-                        var filesInFolder = await backgroundImageFolder.GetFilesAsync();
-                        if (images.Count > 0)
-                        {
-                            foreach (string y in images)
-                            {
-                                foreach (var items in filesInFolder)
-                                {
-                                    if (items.DisplayName == y)
-                                    {
-                                        BackgroundImages bi = new BackgroundImages();
-                                        await bi.FileNameAsync(items);
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (var items in filesInFolder)
-                            {
-                                BackgroundImages bi = new BackgroundImages();
-                                await bi.FileNameAsync(items);                               
-                                backgroundImage.Add(bi);
+                       List<BackgroundImages> image = JsonConvert.DeserializeObject<List<BackgroundImages>>(images);
+                        backgroundImage = new PagniationAsyncObservableCollection<BackgroundImages>(image);
+                        //var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);
+                        //var filesInFolder = await backgroundImageFolder.GetFilesAsync();
+                        //if (images.Count > 0)
+                        //{
+                        //    foreach (string y in images)
+                        //    {
+                        //        foreach (var items in filesInFolder)
+                        //        {
+                        //            if (items.DisplayName == y)
+                        //            {
+                        //                BackgroundImages bi = new BackgroundImages();
+                        //                await bi.FileNameAsync(items);
+                        //            }
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    foreach (var items in filesInFolder)
+                        //    {
+                        //        BackgroundImages bi = new BackgroundImages();
+                        //        await bi.FileNameAsync(items);                               
+                        //        backgroundImage.Add(bi);
 
 
-                            }
-                        }
+                        //    }
+                        //}
                     }
                     catch (Exception e)
                     {
@@ -161,10 +154,10 @@ namespace appLauncher
 
         public static async Task SaveImageOrder()
         {
-                List<string> imageorder = new List<string>();
-                imageorder = (from x in backgroundImage select x.FileDisplayName).ToList();
+            List<BackgroundImages> images = backgroundImage.ToList();
+             var json = JsonConvert.SerializeObject(images,Formatting.Indented);
                 StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.CreateFileAsync("images.txt", CreationCollisionOption.ReplaceExisting);
-                await FileIO.WriteLinesAsync(item, imageorder);
+           await FileIO.WriteTextAsync(item,json);
 
            
 

@@ -10,6 +10,7 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.UI;
 
 namespace appLauncher.ViewModels
 {
@@ -118,6 +119,18 @@ namespace appLauncher.ViewModels
                         await item.DeleteAsync();
                     }
                 }
+            }
+        }
+        public async Task ClearSettings()
+        {
+            var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);
+            await backgroundImageFolder.DeleteAsync(StorageDeleteOption.Default);
+            App.localSettings.Values["bgImageAvailable"] = false;
+            GlobalVariables.backgroundImage.Clear();
+            foreach (AppItems item in GlobalVariables.AllItems)
+            {
+                item.BackgroundColor = Colors.Blue;
+                item.ForgroundColor = Colors.Transparent;               
             }
 
         }
