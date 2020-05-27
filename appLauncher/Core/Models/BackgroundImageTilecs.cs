@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppLauncher.Mobile.Core.ViewModels
+namespace appLauncher.Core.Models
 {
-    class BaseViewModel
+    class BackgroundImageTilecs
     {
     }
 }

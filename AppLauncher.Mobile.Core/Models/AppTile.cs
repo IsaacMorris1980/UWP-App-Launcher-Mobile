@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppLauncher.Mobile.Core.Models
+namespace appLauncher.Mobile.Core.Models
 {
     class AppTile
     {

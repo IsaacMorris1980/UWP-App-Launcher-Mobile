@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Nito.AsyncEx;
 using System.IO;
 
-namespace appLauncher
+namespace appLauncher.Mobile.Core.Helpers
 {
     public static class GlobalVariables
     {

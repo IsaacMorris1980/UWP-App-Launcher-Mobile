@@ -1,5 +1,5 @@
 ﻿using appLauncher.Animations;
-using appLauncher.Control;
+using appLauncher.Core.Control;
 using appLauncher.Core;
 using appLauncher.Helpers;
 using appLauncher.Model;
@@ -36,7 +36,7 @@ using Windows.System.Threading;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace appLauncher
+namespace appLauncher.Pages
 {
 
     /// <summary>
@@ -46,9 +46,7 @@ namespace appLauncher
     {
         private int maxRows;
         private int maxColumns;
-        // public ObservableCollection<finalAppItem> finalApps;
-        public static FlipViewItem flipViewTemplate;
-        StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+          StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         bool pageIsLoaded = false;
         bool backgroundhasbeenset = false;
         public CoreDispatcher coredispatcher;

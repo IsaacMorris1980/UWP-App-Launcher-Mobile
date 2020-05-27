@@ -1,0 +1,16 @@
+﻿<Page
+    x:Class="appLauncher.Pages.splashScreen"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:c="using:Microsoft.Xaml.Interactions.Core"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:appLauncher"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:childs="using:appLauncher.Core.ViewModels"
+    mc:Ignorable="d">
+
+    <Grid x:Name="Testgrid" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
+        <Image Source="Assets/SplashScreen.png" x:Name="theImage"/>
+    </Grid>
+</Page>

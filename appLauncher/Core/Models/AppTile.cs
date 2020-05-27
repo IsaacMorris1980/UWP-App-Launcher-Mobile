@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppLauncher.Mobile.Core.Models
+namespace appLauncher.Core.Models
 {
-    class BaseModel
+    class AppTile
     {
     }
 }
