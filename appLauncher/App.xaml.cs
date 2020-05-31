@@ -1,4 +1,6 @@
-﻿using appLauncher.Model;
+﻿using appLauncher.Core.Helpers;
+using appLauncher.Model;
+using appLauncher.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -51,6 +53,7 @@ namespace appLauncher
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
+
             GlobalVariables.bgimagesavailable = (App.localSettings.Values["bgImageAvailable"]==null)?false:true;
            //Extends view into status bar/title bar, depending on the device used.
             var appView = ApplicationView.GetForCurrentView();

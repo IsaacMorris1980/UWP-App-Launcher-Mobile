@@ -1,13 +1,16 @@
-﻿using System;
+﻿using appLauncher.Core.Brushes;
+using appLauncher.Core.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.UI;
 using Windows.UI.Xaml.Media;
 
 namespace appLauncher.Core.Models
 {
-   public class AppTile
+   public class AppTile : BaseModel
     {
 		public string AppName { get; set; }
 		public string AppFullName { get; set; }

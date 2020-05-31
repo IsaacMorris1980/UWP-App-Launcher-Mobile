@@ -1,7 +1,7 @@
-﻿using appLauncher.Animations;
+﻿using appLauncher.Core.Animations;
 using appLauncher.Core.Control;
 using appLauncher.Core;
-using appLauncher.Helpers;
+using appLauncher.Core.Helpers;
 using appLauncher.Model;
 using appLauncher.Pages;
 using Microsoft.Toolkit.Uwp.UI.Animations;
@@ -537,7 +537,7 @@ namespace appLauncher.Pages
                 default:
                     break;
             }
-            this.Frame.Navigate(typeof(appLauncher.MainPage));
+            this.Frame.Navigate(typeof(appLauncher.Pages.MainPage));
         }
         private void FlipViewMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

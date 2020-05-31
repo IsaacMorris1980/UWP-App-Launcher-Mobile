@@ -1,4 +1,4 @@
-﻿using appLauncher.Helpers;
+﻿using appLauncher.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

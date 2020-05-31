@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using appLauncher.Model;
 using System.Collections.ObjectModel;
-using appLauncher.Helpers;
+using appLauncher.Core.Helpers;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Nito.AsyncEx;
 using System.IO;
 
 namespace appLauncher.Core.Helpers

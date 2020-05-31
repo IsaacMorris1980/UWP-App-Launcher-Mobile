@@ -22,6 +22,8 @@ using System.Collections.ObjectModel;
 using Windows.UI.Input;
 using Windows.UI.Core;
 using appLauncher.Core.Models;
+using appLauncher.Core.Helpers;
+using appLauncher.Pages;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -83,7 +85,7 @@ namespace appLauncher.Core.Control
             //    ProgressRing.IsActive = true;
             //    dispatcher.Start();
             //}
-            GridViewMain.ItemsSource =
+            GridViewMain.ItemsSource = AllApps.listOfApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
         }
 
 		public void SwitchedFromThisPage()

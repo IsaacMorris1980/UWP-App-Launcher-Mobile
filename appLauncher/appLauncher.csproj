@@ -102,6 +102,7 @@
     </Compile>
     <Compile Include="Core\Animations\IndicatorAnimation.cs" />
     <Compile Include="Core\BaseModel.cs" />
+    <Compile Include="Core\Brushes\MaskedBrush.cs" />
     <Compile Include="Core\Control\appControl.xaml.cs">
       <DependentUpon>appControl.xaml</DependentUpon>
     </Compile>
@@ -114,6 +115,9 @@
     <Compile Include="Core\Models\AppTile.cs" />
     <Compile Include="Core\Models\BackgroundImageTilecs.cs" />
     <Compile Include="Core\Models\PaginationCollection.cs" />
+    <Compile Include="Core\ViewModels\MainPageViewModel.cs" />
+    <Compile Include="Core\ViewModels\SearchPageViewModel.cs" />
+    <Compile Include="Core\ViewModels\SettingsViewModel.cs" />
     <Compile Include="Core\ViewModels\SplashScreenViewModel.cs" />
     <Compile Include="Core\Enums\DeviceType.cs" />
     <Compile Include="Pages\MainPage.xaml.cs">
@@ -242,9 +246,7 @@
       <Version>1.5.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Core\Brushes\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
