@@ -1,4 +1,4 @@
-﻿using appLauncher.Model;
+﻿using appLauncher.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,6 +17,8 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using appLauncher.Core.Helpers;
+using Windows.UI;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -81,23 +83,26 @@ namespace appLauncher.Pages
             var file = await picker.PickMultipleFilesAsync();
             if (file.Any())
             {
-            var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);
-                
-                if (GlobalVariables.bgimagesavailable) 
+            if (GlobalVariables.bgimagesavailable) 
                 {
-                    BitmapImage bitmap = new BitmapImage();
-                    var filesInFolder = await backgroundImageFolder.GetFilesAsync();
-                    foreach (StorageFile item in file)
+                    
+                  foreach (StorageFile item in file)
                     {
-                        BackgroundImages bi = new BackgroundImages();
-                        bi.Filename = item.DisplayName;
-                        bi.Bitmapimage = new BitmapImage(new Uri(item.Path));
-                        bool exits = filesInFolder.Any(x => x.DisplayName == item.DisplayName);
+                       bool exits = GlobalVariables.backgroundImage.Any(x => x.DisplayName == item.DisplayName);
                         if (!exits)
                         {
-                          
+                            BackgroundImageTile bi = new BackgroundImageTile();
+                            bi.DisplayName = item.DisplayName;
+                            var te = await item.OpenAsync(FileAccessMode.Read);
+                            byte[] bitmapImageBytes = null;
+                            var reader = new Windows.Storage.Streams.DataReader(te.GetInputStreamAt(0));
+                            bitmapImageBytes = new byte[te.Size];
+                            await reader.LoadAsync((uint)te.Size);
+                            reader.ReadBytes(bitmapImageBytes);
+                            bi.Backgroundimage = bitmapImageBytes;
+                            bi.BackgroundImageColor = Colors.Transparent;
+                            bi.BackgroundImageOpacity = 1;
                             GlobalVariables.backgroundImage.Add(bi);
-                           await   item.CopyAsync(backgroundImageFolder);
                         }
                        
 
@@ -107,15 +112,24 @@ namespace appLauncher.Pages
                 {
                     foreach (var item in file)
                     {
-                        BackgroundImages bi = new BackgroundImages();
-                        bi.Filename = item.DisplayName;
-                        bi.Bitmapimage = new BitmapImage(new Uri(item.Path));
+                        BackgroundImageTile bi = new BackgroundImageTile();
+                        bi.DisplayName = item.DisplayName;
+                        bi.BackgroundImageOpacity = 1;
+                        bi.BackgroundImageColor = Colors.Transparent;
+                        var te = await item.OpenAsync(FileAccessMode.Read);
+                        byte[] bitmapImageBytes = null;
+                        var reader = new Windows.Storage.Streams.DataReader(te.GetInputStreamAt(0));
+                        bitmapImageBytes = new byte[te.Size];
+                        await reader.LoadAsync((uint)te.Size);
+                        reader.ReadBytes(bitmapImageBytes);
+                        bi.Backgroundimage = bitmapImageBytes;
                         GlobalVariables.backgroundImage.Add(bi);
-                        await item.CopyAsync(backgroundImageFolder);
+                        App.localSettings.Values["bgImageAvailable"] = true;
+                        GlobalVariables.bgimagesavailable = true;
+
                     }
                     
-                    App.localSettings.Values["bgImageAvailable"] = true;
-                    GlobalVariables.bgimagesavailable = true;
+                   
                 }
                //   StorageFile savedImage = await file.CopyAsync(backgroundImageFolder);
            //    ((Window.Current.Content as Frame).Content as MainPage).loadSettings();
@@ -126,57 +140,28 @@ namespace appLauncher.Pages
             }
         }
 
-        private void AddWebAppButton_Click(object sender, RoutedEventArgs e)
+        private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-     
-        private async void RemoveButton_ClickAsync(object sender, RoutedEventArgs e)
-        {
-            
-            if (imagelist.SelectedIndex !=-1)
+            if (imagelist.SelectedIndex != -1)
             {
-                BackgroundImages bi = (BackgroundImages)imagelist.SelectedItem;
-                if (GlobalVariables.backgroundImage.Any(x=>x.Filename==bi.Filename))
+                BackgroundImageTile bi = (BackgroundImageTile)imagelist.SelectedItem;
+                if (GlobalVariables.backgroundImage.Any(x => x.DisplayName == bi.DisplayName))
                 {
-                    var files = (from x in GlobalVariables.backgroundImage where x.Filename == bi.Filename select x).ToList();
+                    var files = (from x in GlobalVariables.backgroundImage where x.DisplayName == bi.DisplayName select x).ToList();
                     foreach (var item in files)
                     {
                         GlobalVariables.backgroundImage.Remove(item);
                     }
                 }
-                var backgroundImageFolder = await localFolder.CreateFolderAsync("backgroundImage", CreationCollisionOption.OpenIfExists);
-                var filesinfolder = await backgroundImageFolder.GetFilesAsync();
-                if (filesinfolder.Any(x=>x.DisplayName == bi.Filename))
-                {
-                    IEnumerable<StorageFile> files = (from x in filesinfolder where x.DisplayName== bi.Filename select x).ToList();
-                    foreach (var item in files)
-                    {
-                        await item.DeleteAsync();
-                    }
-                }
+
             }
-           
-        }
-
-    
-
-        private void ListView_DragItemsStarting(object sender, DragItemsStartingEventArgs e)
-        {
-
-        }
-
-        private void ListView_Drop(object sender, DragEventArgs e)
-        {
 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-           
-        }
 
-      
+        }
     }
 }

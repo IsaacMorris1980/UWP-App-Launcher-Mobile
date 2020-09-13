@@ -13,10 +13,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using appLauncher.Core.Control;
-using appLauncher.Model;
+using appLauncher.Core.Models;
 using System.Collections.ObjectModel;
 using Windows.UI.Core;
 using appLauncher.Core;
+using appLauncher.Core.Helpers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -27,7 +28,7 @@ namespace appLauncher.Pages
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        public ReadOnlyObservableCollection<finalAppItem> queriedApps = new ReadOnlyObservableCollection<finalAppItem>(AllApps.listOfApps);
+        public ReadOnlyObservableCollection<AppTile> queriedApps = new ReadOnlyObservableCollection<AppTile>(GlobalVariables.allApps);
         public SearchPage()
         {
             this.InitializeComponent();
@@ -48,7 +49,7 @@ namespace appLauncher.Pages
             string query = useMeTextBox.Text.ToLower();
             if (!String.IsNullOrEmpty(query))
             {
-                QueriedAppsListView.ItemsSource = queriedApps.Where(p => p.appEntry.DisplayInfo.DisplayName.ToLower().Contains(query));
+                QueriedAppsListView.ItemsSource = queriedApps.Where(p => p.AppName.ToLower().Contains(query));
 
             }
             else
@@ -60,7 +61,7 @@ namespace appLauncher.Pages
         private async void QueriedAppsListView_ItemClick(object sender, ItemClickEventArgs e)
         {
 
-            await ((finalAppItem)e.ClickedItem).appEntry.LaunchAsync();
+            await ((AppTile)e.ClickedItem).LaunchAsync();
 
 
         }

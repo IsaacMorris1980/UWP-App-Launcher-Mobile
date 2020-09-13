@@ -17,12 +17,14 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
-    <PackageCertificateKeyFile>appLauncher_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>
+    </PackageCertificateKeyFile>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
-    <PackageCertificateThumbprint>8892530D8C444D10909E3D55F4B53C489C392BC1</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>60EE37845AA3D085637CDBF0D2A5689120CB89F1</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -34,6 +36,8 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+    <Optimize>true</Optimize>
+    <UseDotNetNativeToolchain>false</UseDotNetNativeToolchain>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -106,33 +110,31 @@
     <Compile Include="Core\Control\appControl.xaml.cs">
       <DependentUpon>appControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Core\Control\MenuControl.xaml.cs">
+      <DependentUpon>MenuControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Core\Control\QueryAppControl.xaml.cs">
       <DependentUpon>QueryAppControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Core\DesktopBackButton.cs" />
+    <Compile Include="Core\Helpers\AppSettings.cs" />
     <Compile Include="Core\Helpers\GlobalVariables.cs" />
     <Compile Include="Core\Helpers\packageHelper.cs" />
     <Compile Include="Core\Models\AppTile.cs" />
-    <Compile Include="Core\Models\BackgroundImageTilecs.cs" />
+    <Compile Include="Core\Models\BackgroundImageTile.cs" />
     <Compile Include="Core\Models\PaginationCollection.cs" />
-    <Compile Include="Core\ViewModels\MainPageViewModel.cs" />
-    <Compile Include="Core\ViewModels\SearchPageViewModel.cs" />
-    <Compile Include="Core\ViewModels\SettingsViewModel.cs" />
-    <Compile Include="Core\ViewModels\SplashScreenViewModel.cs" />
     <Compile Include="Core\Enums\DeviceType.cs" />
-    <Compile Include="Pages\MainPage.xaml.cs">
+    <Compile Include="Core\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\BackgroundImages.cs" />
-    <Compile Include="Model\finalAppItem.cs" />
-    <Compile Include="Pages\settings.xaml.cs">
+    <Compile Include="Core\Pages\settings.xaml.cs">
       <DependentUpon>settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Pages\SearchPage.xaml.cs">
+    <Compile Include="Core\Pages\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\splashScreen.xaml.cs">
+    <Compile Include="Core\Pages\splashScreen.xaml.cs">
       <DependentUpon>splashScreen.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -202,23 +204,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Core\Control\MenuControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Core\Control\QueryAppControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\MainPage.xaml">
+    <Page Include="Core\Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\settings.xaml">
+    <Page Include="Core\Pages\settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\SearchPage.xaml">
+    <Page Include="Core\Pages\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\splashScreen.xaml">
+    <Page Include="Core\Pages\splashScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,11 +248,16 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
     <PackageReference Include="UWP.SDKforGoogleAnalytics.Managed">
       <Version>1.5.2</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Commands\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

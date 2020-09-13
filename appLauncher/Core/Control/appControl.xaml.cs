@@ -1,26 +1,10 @@
-﻿using appLauncher.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.ApplicationModel.Core;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
-using appLauncher;
-using Windows.UI;
 using System.Collections.ObjectModel;
-using Windows.UI.Input;
-using Windows.UI.Core;
 using appLauncher.Core.Models;
 using appLauncher.Core.Helpers;
 using appLauncher.Pages;
@@ -38,15 +22,15 @@ namespace appLauncher.Core.Control
 
 
 
-        public ObservableCollection<finalAppItem> listOfApps
-        {
-            get { return (ObservableCollection<finalAppItem>)GetValue(listOfAppsProperty); }
-            set { SetValue(listOfAppsProperty, value); }
-        }
+        //public ObservableCollection<AppTile> listOfApps
+        //{
+        //    get { return (ObservableCollection<AppTile>)GetValue(listOfAppsProperty); }
+        //    set { SetValue(listOfAppsProperty, value); }
+        //}
 
-        // Using a DependencyProperty as the backing store for listOfApps.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty listOfAppsProperty =
-            DependencyProperty.Register("listOfApps", typeof(ObservableCollection<finalAppItem>), typeof(appControl), null);
+        //// Using a DependencyProperty as the backing store for listOfApps.  This enables animation, styling, binding, etc...
+        //public static readonly DependencyProperty listOfAppsProperty =
+        //    DependencyProperty.Register("listOfApps", typeof(ObservableCollection<AppTile>), typeof(appControl), null);
 
 
         //Each copy of this control is binded to an app.
@@ -68,7 +52,7 @@ namespace appLauncher.Core.Control
             //{
             //	SwitchedToThisPage();
             //}
-            GridViewMain.ItemsSource = AllApps.listOfApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
+         GridViewMain.ItemsSource =   GlobalVariables.allApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
 
         }
 
@@ -76,7 +60,7 @@ namespace appLauncher.Core.Control
 		{
 			ProgressRing.IsActive = false;
 			dispatcher.Stop();
-            GridViewMain.ItemsSource = AllApps.listOfApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
+            GridViewMain.ItemsSource =GlobalVariables.allApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
 		}
 		public void SwitchedToThisPage()
 		{
@@ -85,7 +69,7 @@ namespace appLauncher.Core.Control
             //    ProgressRing.IsActive = true;
             //    dispatcher.Start();
             //}
-            GridViewMain.ItemsSource = AllApps.listOfApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
+            GridViewMain.ItemsSource = GlobalVariables.allApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
         }
 
 		public void SwitchedFromThisPage()
@@ -99,8 +83,8 @@ namespace appLauncher.Core.Control
             object item = e.Items.First();
             var source = sender;
             e.Data.Properties.Add("item", item);
-            GlobalVariables.itemdragged = (finalAppItem)item;
-            GlobalVariables.oldindex = AllApps.listOfApps.IndexOf((finalAppItem)item);
+            GlobalVariables.itemdragged = (AppTile)item;
+            GlobalVariables.oldindex = GlobalVariables.allApps.IndexOf((AppTile)item);
         }
 
         private void GridViewMain_Drop(object sender, DragEventArgs e)
@@ -122,13 +106,14 @@ namespace appLauncher.Core.Control
             //Determine the index of the item from the item position (assumed all items are the same size)
             int index = Math.Min(view.Items.Count - 1, (int)(pos.Y / itemHeight));
             int indexy = Math.Min(view.Items.Count - 1, (int)(pos.X / itemwidth));
-            var t = (List<finalAppItem>)view.ItemsSource;
+            var t = (List<AppTile>)view.ItemsSource;
             var te = t[((index * GlobalVariables.columns) + (indexy))];
-            GlobalVariables.newindex = AllApps.listOfApps.IndexOf(te);
-            AllApps.listOfApps.Move(GlobalVariables.oldindex,GlobalVariables.newindex);
+            GlobalVariables.newindex = GlobalVariables.allApps.IndexOf(te);
+            GlobalVariables.allApps.Move(GlobalVariables.oldindex,GlobalVariables.newindex);
           GlobalVariables.pagenum = (int)this.DataContext;
             SwitchedToThisPage();
           ((Window.Current.Content as Frame).Content as MainPage).UpdateIndicator(GlobalVariables.pagenum);
+            GlobalVariables.isdragging = false;
 
         }
 
@@ -174,8 +159,8 @@ namespace appLauncher.Core.Control
 
         private async void GridViewMain_ItemClick(object sender, ItemClickEventArgs e)
         {
-            finalAppItem fi = (finalAppItem)e.ClickedItem;
-            await fi.appEntry.LaunchAsync();
+            AppTile fi = (AppTile)e.ClickedItem;
+            await fi.LaunchAsync();
         }
     }
 }

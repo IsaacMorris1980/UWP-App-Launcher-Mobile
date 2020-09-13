@@ -15,9 +15,11 @@ namespace appLauncher.Core.Brushes
 {
     public class MaskedBrush : XamlCompositionBrushBase
     {
-        public MaskedBrush(byte[] stream)
+        public MaskedBrush(byte[] stream,Color color,double opacity)
         {
             this.stream = stream.AsBuffer().AsStream().AsRandomAccessStream();
+            this.Opacity =(opacity>=0)?opacity:0;
+            this.overlaycolor = color;
             base.FallbackColor = Colors.Transparent;
 
         }

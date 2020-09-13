@@ -19,8 +19,12 @@ namespace appLauncher.Core.Models
 		public Color AppTileForgroundcolor { get; set; }
 		public Color AppTileBackgroundcolor { get; set; }
 		public double AppTileOpacity { get; set; } = 1;
-		public byte[] appLogo { get; set; }
-		public async Task<bool> LaunchAsync()
+		public byte[] AppLogo { get; set; }
+		public int AppFontSize { get; set; } = 12;
+		public Brush TextColorBrush => TextForeGroundColorBrush();
+        public Brush AppTileBackground => BackgroundColorBrush();
+		public Brush AppLogoForeground => ForegroundLabel();
+        public async Task<bool> LaunchAsync()
 		{
 			var packages = await packageHelper.pkgManager.FindPackage(this.AppFullName).GetAppListEntriesAsync();
 			return await packages[0].LaunchAsync();
@@ -30,10 +34,8 @@ namespace appLauncher.Core.Models
 
 		public MaskedBrush ForegroundLabel()
 		{
-			MaskedBrush mb = new MaskedBrush(appLogo);
-			mb.Opacity = 1;
-			mb.overlaycolor = AppTileForgroundcolor;
-			return mb;
+			return new MaskedBrush(AppLogo,AppTileForgroundcolor,AppTileOpacity);
+			
 		}
 		public SolidColorBrush BackgroundColorBrush()
 		{
@@ -41,5 +43,11 @@ namespace appLauncher.Core.Models
 			scb.Opacity = this.AppTileOpacity;
 			return scb;
 		}
+		public SolidColorBrush TextForeGroundColorBrush()
+        {
+			SolidColorBrush scb = new SolidColorBrush(AppTileForgroundcolor);
+			scb.Opacity = this.AppTileOpacity;
+			return scb;
+        }
 	}
 }

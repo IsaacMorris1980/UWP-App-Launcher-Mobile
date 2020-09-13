@@ -1,9 +1,9 @@
-﻿using appLauncher.Core.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -18,13 +18,11 @@ using Windows.UI.Xaml.Navigation;
 
 namespace appLauncher.Core.Control
 {
-    public sealed partial class QueryAppControl : UserControl
+    public sealed partial class MenuControl : UserControl
     {
-        public AppTile AppQueryResult { get { return DataContext as AppTile; } }
-        public QueryAppControl()
+        public MenuControl()
         {
             this.InitializeComponent();
-            this.DataContextChanged += (s, e) => Bindings.Update();
         }
     }
 }

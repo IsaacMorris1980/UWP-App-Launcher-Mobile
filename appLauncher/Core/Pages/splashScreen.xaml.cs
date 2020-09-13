@@ -1,50 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Toolkit.Uwp.UI.Animations;
+using System;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
-using Windows.UI.Xaml.Controls;
-
-using appLauncher.Core.Models;
-using Microsoft.Toolkit.Uwp.UI.Animations;
-using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Controls;
 using appLauncher.Core.Helpers;
-using appLauncher.Pages;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Navigation;
 
-namespace appLauncher.Core.ViewModels
+
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
+
+namespace appLauncher.Pages
 {
-   public  class SplashScreenViewModel : BaseModel
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    partial class splashScreen : Page
     {
         internal Rect splashImageRect; // Rect to store splash screen image coordinates.
         private SplashScreen mySplash; // Variable to hold the splash screen object.
         internal bool dismissed = false; // Variable to track splash screen dismissal status.
         internal static Frame rootFrame;
         static bool appsLoaded = false;
-        public static Image theImage = new Image();
-        internal DispatcherTimer timer;
-        public SplashScreenViewModel(SplashScreen splashscreen, bool loadState, ref Frame RootFrame,Image images)
+
+        public splashScreen(SplashScreen splashscreen, bool loadState, ref Frame RootFrame)
         {
-            timer.Tick += Timer_Tick;
-            timer.Interval = TimeSpan.FromSeconds(15);
-            timer.Start();
-            // Listen f or window resize events to reposition the extended splash screen image accordingly.
+       
+            
+           this.InitializeComponent();
+            Task.Run(() => packageHelper.getAllAppsAsync());
+            Task.Run(() => GlobalVariables.LoadBackgroundImages());
+            // Listen for window resize events to reposition the extended splash screen image accordingly.
             // This ensures that the extended splash screen formats properly in response to window resizing.
             Window.Current.SizeChanged += new WindowSizeChangedEventHandler(ExtendedSplash_OnResize);
-            theImage = images;
-            mySplash = splashscreen;
+           mySplash = splashscreen;
             if (mySplash != null)
+               
             {
+
                 rootFrame = RootFrame;
                 // Register an event handler to be executed when the splash screen has been dismissed.
                 mySplash.Dismissed += new TypedEventHandler<SplashScreen, Object>(DismissedEventHandler);
@@ -55,19 +50,23 @@ namespace appLauncher.Core.ViewModels
 
 
             }
-            Task.Run(() => packageHelper.getAllAppsAsync());
+
             // Create a Frame to act as the navigation context
 
 
         }
 
-        private void Timer_Tick(object sender, object e)
+        private void PackageHelper_AppsRetreived(object sender, EventArgs e)
         {
-            
             DismissExtendedSplash();
-            (sender as DispatcherTimer).Stop();
         }
- 
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+        }
+
         private async void DismissedEventHandler(SplashScreen sender, object args)
         {
             await Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
@@ -96,7 +95,18 @@ namespace appLauncher.Core.ViewModels
                 }
 
             });
-           // Complete app setup operations here...
+
+
+            //await Task.Run(() => finalAppItem.getApps());
+
+
+            //await AllApps.getApps();
+            //await GlobalVariables.LoadCollectionAsync();
+            //await Task.Delay(1500);
+
+
+
+            // Complete app setup operations here...
 
         }
 
@@ -136,7 +146,7 @@ namespace appLauncher.Core.ViewModels
         private void Anim_Completed(object sender, AnimationSetCompletedEventArgs e)
         {
 
-            rootFrame.Content = new Pages.MainPage();
+            rootFrame.Content = new MainPage();
             Window.Current.Content = rootFrame;
             rootFrame.Navigate(typeof(MainPage));
         }
@@ -165,9 +175,14 @@ namespace appLauncher.Core.ViewModels
             theImage.Width = splashImageRect.Width;
         }
 
-
-
-
+        async void RestoreStateAsync(bool loadState)
+        {
+            if (loadState)
+            {
+                // code to load your app's state here
+            }
+        }
 
     }
+
 }

@@ -19,8 +19,8 @@ namespace appLauncher.Core.Models
                 if (value >= 0)
                 {
                     _itemCountPerPage = value;
-                    RecalculateThePageItems();
-                    OnPropertyChanged(new PropertyChangedEventArgs("PageSize"));
+                   // RecalculateThePageItems();
+                  //  OnPropertyChanged(new PropertyChangedEventArgs("PageSize"));
                 }
             }
         }
@@ -33,8 +33,8 @@ namespace appLauncher.Core.Models
                 if (value >= 0)
                 {
                     _currentPageIndex = value;
-                    RecalculateThePageItems();
-                    OnPropertyChanged(new PropertyChangedEventArgs("CurrentPage"));
+                    // RecalculateThePageItems();
+                    // OnPropertyChanged(new PropertyChangedEventArgs("CurrentPage"));
                 }
             }
         }
@@ -63,7 +63,12 @@ namespace appLauncher.Core.Models
             originalCollection = new List<T>();
         }
         #endregion
-
+        public void SetSize(int pagnum,int pagesize)
+        {
+            this.CurrentPage = pagnum;
+            this.PageSize = pagesize;
+            RecalculateThePageItems();
+        }
         #region private 
         private void RecalculateThePageItems()
         {

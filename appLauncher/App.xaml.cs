@@ -1,11 +1,13 @@
 ﻿using appLauncher.Core.Helpers;
-using appLauncher.Model;
+using appLauncher.Core.Models;
 using appLauncher.Pages;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
+
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -42,8 +44,13 @@ namespace appLauncher
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+            this.UnhandledException += App_UnhandledException; 
             
-            
+        }
+
+        private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            await GlobalVariables.Logging(e.ToString());
         }
 
         /// <summary>
@@ -104,24 +111,25 @@ namespace appLauncher
                 if (e.PreviousExecutionState != ApplicationExecutionState.Running)
                 {
                     bool loadState = (e.PreviousExecutionState == ApplicationExecutionState.Terminated);
-                    splashScreen extendedSplash = new splashScreen(e.SplashScreen, loadState, ref rootFrame);
+                    MainPage extendedSplash = new MainPage();
                     rootFrame.Content = extendedSplash;
                     Window.Current.Content = rootFrame;
                 }
             }
 
-            if (e.PrelaunchActivated == false)
-            {
-                if (rootFrame.Content == null)
-                {
-                    // When the navigation stack isn't restored navigate to the first page,
-                    // configuring the new page by passing required information as a navigation
-                    // parameter
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
-                }
-                // Ensure the current window is active
-                Window.Current.Activate();
-            }
+            //if (e.PrelaunchActivated == false)
+            //{
+            //    if (rootFrame.Content == null)
+            //    {
+            //        // When the navigation stack isn't restored navigate to the first page,
+            //        // configuring the new page by passing required information as a navigation
+            //        // parameter
+            //        rootFrame.Navigate(typeof(MainPage), e.Arguments);
+            //    }
+            //    // Ensure the current window is active
+            //    Window.Current.Activate();
+            //}
+            Window.Current.Activate();
         }
 
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -152,13 +160,11 @@ namespace appLauncher
         /// Initialises local settings if the app has been started for the first time
         /// or new settings have been introduced from an update.
         /// </summary>
-        private void initialiseLocalSettings()
+        private async Task initialiseLocalSettings()
         {
-
-            if (localSettings.Values["bgImageAvailable"] == null)
-            {
-                localSettings.Values["bgImageAvailable"] = "0";
-            }
+          await GlobalVariables.LoadBackgroundImages();
+           
+           
         }
 
 

@@ -2,7 +2,7 @@
 using appLauncher.Core.Control;
 using appLauncher.Core;
 using appLauncher.Core.Helpers;
-using appLauncher.Model;
+using appLauncher.Core.Models;
 using appLauncher.Pages;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
@@ -101,7 +101,7 @@ namespace appLauncher.Pages
                 GlobalVariables.appsperscreen=maxColumns*maxRows;
                 int additionalPagesToMake = calculateExtraPages(GlobalVariables.appsperscreen) - 1;
                 int fullPages = additionalPagesToMake;
-                int appsLeftToAdd = AllApps.listOfApps.Count() - (fullPages * GlobalVariables.appsperscreen);
+                int appsLeftToAdd = GlobalVariables.allApps.Count() - (fullPages * GlobalVariables.appsperscreen);
                 if (appsLeftToAdd > 0)
                 {
                     additionalPagesToMake += 1;
@@ -189,8 +189,8 @@ namespace appLauncher.Pages
         /// <param name="e"></param>
         private async void appGridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var clickedApp = (finalAppItem)e.ClickedItem;
-            bool isLaunched = await clickedApp.appEntry.LaunchAsync();
+            var clickedApp = (AppTile)e.ClickedItem;
+            bool isLaunched = await clickedApp.LaunchAsync();
             if (isLaunched == false)
             {
                 Debug.WriteLine("Error: App not launched!");
@@ -215,7 +215,7 @@ namespace appLauncher.Pages
             GlobalVariables.appsperscreen = maxColumns * maxRows;
             int additionalPagesToMake = calculateExtraPages(GlobalVariables.appsperscreen) - 1;
             int fullPages = additionalPagesToMake;
-           int appsLeftToAdd = AllApps.listOfApps.Count() - (fullPages * GlobalVariables.appsperscreen);
+           int appsLeftToAdd = GlobalVariables.allApps.Count() - (fullPages * GlobalVariables.appsperscreen);
             if (appsLeftToAdd > 0)
             {
                 additionalPagesToMake += 1;
@@ -347,7 +347,7 @@ namespace appLauncher.Pages
         private int calculateExtraPages(int appsPerScreen)
         {
             double appsPerScreenAsDouble = appsPerScreen;
-            double numberOfApps = AllApps.listOfApps.Count();
+            double numberOfApps = GlobalVariables.allApps.Count();
             int pagesToMake = (int)Math.Ceiling(numberOfApps / appsPerScreenAsDouble);
             return pagesToMake;
         }
@@ -489,55 +489,28 @@ namespace appLauncher.Pages
             {
                 case "AtoZ":
                     {
-                        var te = AllApps.Allpackages.OrderBy(x => x.Key.DisplayInfo.DisplayName);
-                        ObservableCollection<finalAppItem> items = new ObservableCollection<finalAppItem>();
-                        foreach (var item in te)
-                        {
-                            items.Add(new finalAppItem
-                            {
-                                appEntry = item.Key,
-                                appLogo = AllApps.listOfApps.First(x => x.appEntry == item.Key).appLogo
-                            });
-                        }
-                        AllApps.listOfApps = items;
+                        var te = GlobalVariables.allApps.OrderBy(x => x.AppName );
+                        GlobalVariables.allApps = new ObservableCollection<AppTile>(te);
                     }
 
                     break;
                 case "Developer":
                     {
 
-                        var te = AllApps.Allpackages.OrderBy(x => x.Value.Id.Publisher);
-                        ObservableCollection<finalAppItem> items = new ObservableCollection<finalAppItem>();
-                        foreach (var item in te)
-                        {
-                            items.Add(new finalAppItem
-                            {
-                                appEntry = item.Key,
-                                appLogo = AllApps.listOfApps.First(x => x.appEntry == item.Key).appLogo
-                            });
-                        }
-                        AllApps.listOfApps = items;
+                        var te = GlobalVariables.allApps.OrderBy(x => x.AppDeveloper);
+                        GlobalVariables.allApps = new ObservableCollection<AppTile>(te)           ;
                     }
                     break;
                 case "Installed":
                     {
-                        var te = AllApps.Allpackages.OrderBy(x => x.Value.InstalledDate);
-                        ObservableCollection<finalAppItem> items = new ObservableCollection<finalAppItem>();
-                        foreach (var item in te)
-                        {
-                            items.Add(new finalAppItem
-                            {
-                                appEntry = item.Key,
-                                appLogo = AllApps.listOfApps.First(x => x.appEntry == item.Key).appLogo
-                            });
-                        }
-                        AllApps.listOfApps = items;
+                        var te = GlobalVariables.allApps.OrderBy(x => x.AppInstalled);
+                        GlobalVariables.allApps = new ObservableCollection<AppTile>(te);
                     }
                     break;
                 default:
                     break;
             }
-            this.Frame.Navigate(typeof(appLauncher.Pages.MainPage));
+            this.Frame.Navigate(typeof(MainPage));
         }
         private void FlipViewMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

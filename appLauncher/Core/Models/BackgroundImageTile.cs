@@ -5,20 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI;
+using Windows.UI.Xaml.Media;
 
 namespace appLauncher.Core.Models
 {
-  public class BackgroundImageTilecs :BaseModel
+  public class BackgroundImageTile :BaseModel
     {
-        public string Filename { get; set; }
+        public string DisplayName { get; set; }
         public byte[] Backgroundimage { get; set; }
         public double BackgroundImageOpacity { get; set; } = 1;
+        public Color BackgroundImageColor { get; set; } = Colors.Transparent;
+        public Brush BackgroundImageBrush => BackgroundBrush();
         public MaskedBrush BackgroundBrush()
         {
-            MaskedBrush mb = new MaskedBrush(Backgroundimage);
-            mb.overlaycolor = Colors.Transparent;
-            mb.Opacity = BackgroundImageOpacity;
-            return mb;
+            return new MaskedBrush(Backgroundimage,BackgroundImageColor,BackgroundImageOpacity);
+        
         }
     }
 }

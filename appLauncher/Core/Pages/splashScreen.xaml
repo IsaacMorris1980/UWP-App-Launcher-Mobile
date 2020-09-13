@@ -9,7 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:childs="using:appLauncher.Core.ViewModels"
     mc:Ignorable="d">
-
     <Grid x:Name="Testgrid" Background="{ThemeResource SystemControlBackgroundAccentBrush}">
         <Image Source="Assets/SplashScreen.png" x:Name="theImage"/>
     </Grid>

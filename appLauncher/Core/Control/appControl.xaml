@@ -32,17 +32,19 @@
         <GridView x:Name="GridViewMain" Margin="55,0,45,0" Padding="12"  CanDrag="True" CanDragItems="True" AllowDrop="True" DragOver="GridViewMain_DragOver" IsItemClickEnabled="True" DragItemsStarting="GridViewMain_DragItemsStarting" Drop="GridViewMain_Drop" ItemClick="GridViewMain_ItemClick"
                   >
             <GridView.Resources>
-               <DataTemplate x:Key="GridViewMainDataTemplate" x:DataType="local:finalAppItem">
+               <DataTemplate x:Key="GridViewMainDataTemplate" x:DataType="local:AppTile">
                     <Grid Width="64" Height="84" Background="Transparent" Margin="12">
-                        <StackPanel Height="84" Width="64" Background="Blue">
-                            <Image Height="50" Width="50" Source="{x:Bind appLogo}" />
-                            <TextBlock Name="appName" Text="{x:Bind appEntry.DisplayInfo.DisplayName}" 
-                                       FontSize="12" 
+                        <StackPanel Height="84" Width="64" Background="{x:Bind AppTileBackground}" Opacity="{x:Bind AppTileOpacity}">
+                            <Canvas Height="50" Width="60" Background="{x:Bind AppLogoForeground}"  />
+                            <TextBlock Name="appName" Text="{x:Bind AppName}" 
+                                       FontSize="{x:Bind AppFontSize}" 
+                                        IsColorFontEnabled="True"
                                        TextAlignment="Center" 
                                        MaxWidth="60" 
                                        FontWeight="SemiBold" 
                                        TextTrimming="CharacterEllipsis" 
-                                       TextWrapping="WrapWholeWords" />
+                                       TextWrapping="WrapWholeWords"
+                                       Foreground="{x:Bind TextColorBrush}"/>
                             
                         </StackPanel>
                     </Grid>
