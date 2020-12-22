@@ -15,11 +15,6 @@ namespace appLauncher.Core.Models
         public byte[] Backgroundimage { get; set; }
         public double BackgroundImageOpacity { get; set; } = 1;
         public Color BackgroundImageColor { get; set; } = Colors.Transparent;
-        public Brush BackgroundImageBrush => BackgroundBrush();
-        public MaskedBrush BackgroundBrush()
-        {
-            return new MaskedBrush(Backgroundimage,BackgroundImageColor,BackgroundImageOpacity);
-        
-        }
+        public Brush BackgroundImageBrush => new MaskedBrush(Backgroundimage, BackgroundImageColor, BackgroundImageOpacity);
     }
 }

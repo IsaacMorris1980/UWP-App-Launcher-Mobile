@@ -32,7 +32,13 @@ namespace appLauncher.Core.Helpers
 
         private static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
         public static ObservableCollection<BackgroundImageTile> backgroundImage { get; set; } = new ObservableCollection<BackgroundImageTile>();
-       public static ObservableCollection<AppTile> allApps { get; set; } = new ObservableCollection<AppTile>();
+
+        internal static void LoadAppSettings()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static ObservableCollection<AppTile> allApps { get; set; } = new ObservableCollection<AppTile>();
 
 
         public static async Task Logging(string texttolog)

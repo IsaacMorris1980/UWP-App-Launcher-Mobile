@@ -77,7 +77,7 @@ namespace appLauncher
 
             if (qualifiers.ContainsKey("DeviceFamily") && qualifiers["DeviceFamily"] == "Mobile")
             {
-               appView.SuppressSystemOverlays = true;
+               appView.TryEnterFullScreenMode();
 
             }
 

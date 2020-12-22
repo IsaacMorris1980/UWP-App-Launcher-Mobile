@@ -37,13 +37,6 @@
                 <TextBlock Margin="16,0,0,16" FontWeight="SemiBold" Foreground="Black"><Underline>Personalisation</Underline></TextBlock>
             </StackPanel>
             <Pivot Grid.Row="1">
-                <PivotItem Header="General App Settings">
-                    <StackPanel Orientation="Horizontal">
-                        <StackPanel Orientation="Vertical">
-                            
-                        </StackPanel>
-                        </StackPanel>
-                </PivotItem>
                 <PivotItem Header="App Tile Settings">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -218,8 +211,10 @@
                                     </ComboBox.Items>
                                 </ComboBox>
                             </StackPanel>
-                            <Button Margin="20" Content="Preview" Width="79" />
-                            <Button Margin="20" Content="Save" Width="79" />
+                            <StackPanel Orientation="Horizontal" >
+                                <Button Margin="20" Content="Preview" Width="79" />
+                                <Button Margin="20" Content="Save" Width="79" />
+                            </StackPanel>
                         </StackPanel>
                         <Image Grid.Column="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" />
                     </Grid>

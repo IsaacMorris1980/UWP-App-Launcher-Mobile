@@ -32,6 +32,7 @@ namespace appLauncher.Pages
            this.InitializeComponent();
             Task.Run(() => packageHelper.getAllAppsAsync());
             Task.Run(() => GlobalVariables.LoadBackgroundImages());
+            Task.Run(() => GlobalVariables.LoadAppSettings());
             // Listen for window resize events to reposition the extended splash screen image accordingly.
             // This ensures that the extended splash screen formats properly in response to window resizing.
             Window.Current.SizeChanged += new WindowSizeChangedEventHandler(ExtendedSplash_OnResize);

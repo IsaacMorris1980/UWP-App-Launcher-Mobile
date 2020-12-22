@@ -19,8 +19,8 @@
             <AppBarButton Content="Settings" Icon="Setting" />
         </CommandBar.PrimaryCommands>
         <CommandBar.SecondaryCommands>
-            <AppBarButton Content="Help" Icon="Help" />
-            <AppBarButton Content="About" Icon="Contact" />
+            <AppBarButton Content="Help" Icon="Help" Visibility="Collapsed" />
+            <AppBarButton Content="About" Icon="ContactInfo" Visibility="Collapsed" />
         </CommandBar.SecondaryCommands>
     </CommandBar>
 </UserControl>
