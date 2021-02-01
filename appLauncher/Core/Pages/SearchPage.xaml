@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="appLauncher.Pages.SearchPage"
+    x:Class="appLauncher.Core.Pages.SearchPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:appLauncher"

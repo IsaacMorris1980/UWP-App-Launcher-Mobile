@@ -21,14 +21,14 @@ using appLauncher.Core.Helpers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace appLauncher.Pages
+namespace appLauncher.Core.Pages
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class SearchPage : Page
     {
-        public ReadOnlyObservableCollection<AppTile> queriedApps = new ReadOnlyObservableCollection<AppTile>(GlobalVariables.allApps);
+        public ReadOnlyObservableCollection<AppTile> queriedApps = new ReadOnlyObservableCollection<AppTile>(GlobalVariables.AllApps);
         public SearchPage()
         {
             this.InitializeComponent();

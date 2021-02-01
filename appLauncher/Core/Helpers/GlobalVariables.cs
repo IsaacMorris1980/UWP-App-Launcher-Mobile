@@ -27,20 +27,13 @@ namespace appLauncher.Core.Helpers
         public static bool isdragging { get; set; }
         public static bool bgimagesavailable { get; set; }
         public static Point startingpoint { get; set; }
-        public static AppSettings appSettings {get;set;}=new AppSettings();
-
+        public static AppSettings appSettings { get; set; } = new AppSettings();
+        public static ApplicationDataContainer localSettings => ApplicationData.Current.LocalSettings;
+       
+        public static ObservableCollection<AppTile> AllApps { get; set; } = new ObservableCollection<AppTile>();
 
         private static StorageFolder localFolder = ApplicationData.Current.LocalFolder;
-        public static ObservableCollection<BackgroundImageTile> backgroundImage { get; set; } = new ObservableCollection<BackgroundImageTile>();
-
-        internal static void LoadAppSettings()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static ObservableCollection<AppTile> allApps { get; set; } = new ObservableCollection<AppTile>();
-
-
+        public static ObservableCollection<BackgroundImageTile> BackgroundImage { get; set; } = new ObservableCollection<BackgroundImageTile>();
         public static async Task Logging(string texttolog)
         {
             StorageFolder stors = ApplicationData.Current.LocalFolder;
@@ -64,7 +57,7 @@ namespace appLauncher.Core.Helpers
         public static async Task SaveCollectionAsync()
         {
           StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.CreateFileAsync("collection.json", CreationCollisionOption.ReplaceExisting);
-          var te = JsonConvert.SerializeObject(allApps,Formatting.Indented);
+          var te = JsonConvert.SerializeObject(AllApps,Formatting.Indented);
           await FileIO.WriteTextAsync(item,te);
            
 
@@ -83,7 +76,7 @@ namespace appLauncher.Core.Helpers
                     try
                     {
                         StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("images.json");
-                       backgroundImage = JsonConvert.DeserializeObject<ObservableCollection<BackgroundImageTile>>(await FileIO.ReadTextAsync(item));
+                       BackgroundImage = JsonConvert.DeserializeObject<ObservableCollection<BackgroundImageTile>>(await FileIO.ReadTextAsync(item));
                     }
                     catch (Exception e)
                     {
@@ -98,11 +91,27 @@ namespace appLauncher.Core.Helpers
         public static async Task SaveImageOrder()
         {
                 StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.CreateFileAsync("images.json", CreationCollisionOption.ReplaceExisting);
-            var str = JsonConvert.SerializeObject(backgroundImage, Formatting.Indented);
+            var str = JsonConvert.SerializeObject(BackgroundImage, Formatting.Indented);
                 await FileIO.WriteTextAsync(item, str);
 
            
 
+        }
+
+        public static async Task LoadAppSettings()
+        {
+            if (await IsFilePresent("AppSettings.json"))
+            {
+                try
+                {
+                    StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("AppSettings.json");
+                    appSettings = JsonConvert.DeserializeObject<AppSettings>(await FileIO.ReadTextAsync(item));
+                }
+                catch (Exception e)
+                {
+                        
+                }
+            }
         }
     }
     

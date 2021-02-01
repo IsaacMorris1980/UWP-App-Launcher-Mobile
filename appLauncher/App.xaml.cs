@@ -1,5 +1,6 @@
 ﻿using appLauncher.Core.Helpers;
 using appLauncher.Core.Models;
+using appLauncher.Core.Pages;
 using appLauncher.Pages;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace appLauncher
     /// </summary>
     sealed partial class App : Application
     {
-        public static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+           
 
        
         /// <summary>
@@ -50,7 +51,11 @@ namespace appLauncher
 
         private async void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            await GlobalVariables.Logging(e.ToString());
+            if (GlobalVariables.appSettings.AppAllowLogging)
+            {
+                await GlobalVariables.Logging(e.ToString());
+            }
+            
         }
 
         /// <summary>
@@ -60,8 +65,11 @@ namespace appLauncher
         /// <param name="e">Details about the launch request and process.</param>
         protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            Task.Run(() => packageHelper.getAllAppsAsync());
+            Task.Run(() => GlobalVariables.LoadBackgroundImages());
+            Task.Run(() => GlobalVariables.LoadAppSettings());
 
-            GlobalVariables.bgimagesavailable = (App.localSettings.Values["bgImageAvailable"]==null)?false:true;
+            GlobalVariables.bgimagesavailable = (GlobalVariables.localSettings.Values["bgImageAvailable"]==null)?false:true;
            //Extends view into status bar/title bar, depending on the device used.
             var appView = ApplicationView.GetForCurrentView();
             appView.SetPreferredMinSize(new Size(360, 360));

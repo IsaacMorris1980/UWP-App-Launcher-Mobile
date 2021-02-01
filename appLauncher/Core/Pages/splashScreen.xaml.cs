@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using appLauncher.Core.Helpers;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
+using appLauncher.Core.Pages;
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -98,11 +99,8 @@ namespace appLauncher.Pages
             });
 
 
-            //await Task.Run(() => finalAppItem.getApps());
-
-
-            //await AllApps.getApps();
-            //await GlobalVariables.LoadCollectionAsync();
+            //await Task.Run(() => packageHelper.getAllAppsAsync());
+            //await GlobalVariables.LoadAppSettings();
             //await Task.Delay(1500);
 
 

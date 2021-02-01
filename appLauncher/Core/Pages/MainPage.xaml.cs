@@ -3,7 +3,7 @@ using appLauncher.Core.Control;
 using appLauncher.Core;
 using appLauncher.Core.Helpers;
 using appLauncher.Core.Models;
-using appLauncher.Pages;
+using appLauncher.Core.Pages;
 using Microsoft.Toolkit.Uwp.UI.Animations;
 using System;
 using System.Collections.Generic;
@@ -36,7 +36,7 @@ using Windows.System.Threading;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace appLauncher.Pages
+namespace appLauncher.Core.Pages
 {
 
     /// <summary>
@@ -101,7 +101,7 @@ namespace appLauncher.Pages
                 GlobalVariables.appsperscreen=maxColumns*maxRows;
                 int additionalPagesToMake = calculateExtraPages(GlobalVariables.appsperscreen) - 1;
                 int fullPages = additionalPagesToMake;
-                int appsLeftToAdd = GlobalVariables.allApps.Count() - (fullPages * GlobalVariables.appsperscreen);
+                int appsLeftToAdd = GlobalVariables.AllApps.Count() - (fullPages * GlobalVariables.appsperscreen);
                 if (appsLeftToAdd > 0)
                 {
                     additionalPagesToMake += 1;
@@ -215,7 +215,7 @@ namespace appLauncher.Pages
             GlobalVariables.appsperscreen = maxColumns * maxRows;
             int additionalPagesToMake = calculateExtraPages(GlobalVariables.appsperscreen) - 1;
             int fullPages = additionalPagesToMake;
-           int appsLeftToAdd = GlobalVariables.allApps.Count() - (fullPages * GlobalVariables.appsperscreen);
+           int appsLeftToAdd = GlobalVariables.AllApps.Count() - (fullPages * GlobalVariables.appsperscreen);
             if (appsLeftToAdd > 0)
             {
                 additionalPagesToMake += 1;
@@ -251,6 +251,7 @@ namespace appLauncher.Pages
 
 
                     //});
+                   
                     screensContainerFlipView.Items.Add(i);
                 }
 
@@ -347,7 +348,7 @@ namespace appLauncher.Pages
         private int calculateExtraPages(int appsPerScreen)
         {
             double appsPerScreenAsDouble = appsPerScreen;
-            double numberOfApps = GlobalVariables.allApps.Count();
+            double numberOfApps = GlobalVariables.AllApps.Count();
             int pagesToMake = (int)Math.Ceiling(numberOfApps / appsPerScreenAsDouble);
             return pagesToMake;
         }
@@ -489,22 +490,22 @@ namespace appLauncher.Pages
             {
                 case "AtoZ":
                     {
-                        var te = GlobalVariables.allApps.OrderBy(x => x.AppName );
-                        GlobalVariables.allApps = new ObservableCollection<AppTile>(te);
+                        var te = GlobalVariables.AllApps.OrderBy(x => x.AppName );
+                        GlobalVariables.AllApps = new ObservableCollection<AppTile>(te);
                     }
 
                     break;
                 case "Developer":
                     {
 
-                        var te = GlobalVariables.allApps.OrderBy(x => x.AppDeveloper);
-                        GlobalVariables.allApps = new ObservableCollection<AppTile>(te)           ;
+                        var te = GlobalVariables.AllApps.OrderBy(x => x.AppDeveloper);
+                        GlobalVariables.AllApps = new ObservableCollection<AppTile>(te)           ;
                     }
                     break;
                 case "Installed":
                     {
-                        var te = GlobalVariables.allApps.OrderBy(x => x.AppInstalled);
-                        GlobalVariables.allApps = new ObservableCollection<AppTile>(te);
+                        var te = GlobalVariables.AllApps.OrderBy(x => x.AppInstalled);
+                        GlobalVariables.AllApps = new ObservableCollection<AppTile>(te);
                     }
                     break;
                 default:

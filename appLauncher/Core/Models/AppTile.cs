@@ -16,10 +16,10 @@ namespace appLauncher.Core.Models
 		public string AppFullName { get; set; }
 		public string AppDeveloper { get; set; }
 		public DateTimeOffset AppInstalled { get; set; }
-		public Color AppTileForgroundcolor { get; set; }
-		public Color AppTileBackgroundcolor { get; set; }
-		public Color AppTileTextColor { get; set; }
-		public double AppTileOpacity { get; set; } = 1;
+		public Color AppTileForgroundcolor { get; set; } = Colors.Black;
+		public Color AppTileBackgroundcolor { get; set; } = Colors.Blue;
+		public Color AppTileTextColor { get; set; } = Colors.Red;
+		public double AppTileOpacity { get; set; } = .25;
 		public byte[] AppLogo { get; set; }
 		public int AppFontSize { get; set; } = 12;
 		public Brush TextColorBrush {get {  
@@ -28,9 +28,9 @@ namespace appLauncher.Core.Models
 			return scb;
         } }
 	public Brush AppTileBackground { get { SolidColorBrush scb = new SolidColorBrush(AppTileBackgroundcolor);
-				scb.Opacity = this.AppTileOpacity;
+				scb.Opacity = 1;
 				return scb; } }
-		public Brush AppLogoForeground => new MaskedBrush(AppLogo, AppTileForgroundcolor, AppTileOpacity);
+		public Brush AppLogoForeground => new MaskedBrush(AppLogo, AppTileForgroundcolor, 1);
 		public async Task<bool> LaunchAsync()
 		{
 			var packages = await packageHelper.pkgManager.FindPackage(this.AppFullName).GetAppListEntriesAsync();

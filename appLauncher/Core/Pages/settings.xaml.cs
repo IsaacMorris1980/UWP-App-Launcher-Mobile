@@ -22,7 +22,7 @@ using Windows.UI;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace appLauncher.Pages
+namespace appLauncher.Core.Pages
 {
     /// <summary>
     /// Page where the launcher settings are configured
@@ -88,7 +88,7 @@ namespace appLauncher.Pages
                     
                   foreach (StorageFile item in file)
                     {
-                       bool exits = GlobalVariables.backgroundImage.Any(x => x.DisplayName == item.DisplayName);
+                       bool exits = GlobalVariables.BackgroundImage.Any(x => x.DisplayName == item.DisplayName);
                         if (!exits)
                         {
                             BackgroundImageTile bi = new BackgroundImageTile();
@@ -102,7 +102,7 @@ namespace appLauncher.Pages
                             bi.Backgroundimage = bitmapImageBytes;
                             bi.BackgroundImageColor = Colors.Transparent;
                             bi.BackgroundImageOpacity = 1;
-                            GlobalVariables.backgroundImage.Add(bi);
+                            GlobalVariables.BackgroundImage.Add(bi);
                         }
                        
 
@@ -123,8 +123,8 @@ namespace appLauncher.Pages
                         await reader.LoadAsync((uint)te.Size);
                         reader.ReadBytes(bitmapImageBytes);
                         bi.Backgroundimage = bitmapImageBytes;
-                        GlobalVariables.backgroundImage.Add(bi);
-                        App.localSettings.Values["bgImageAvailable"] = true;
+                        GlobalVariables.BackgroundImage.Add(bi);
+                        GlobalVariables.localSettings.Values["bgImageAvailable"] = true;
                         GlobalVariables.bgimagesavailable = true;
 
                     }
@@ -146,12 +146,12 @@ namespace appLauncher.Pages
             if (imagelist.SelectedIndex != -1)
             {
                 BackgroundImageTile bi = (BackgroundImageTile)imagelist.SelectedItem;
-                if (GlobalVariables.backgroundImage.Any(x => x.DisplayName == bi.DisplayName))
+                if (GlobalVariables.BackgroundImage.Any(x => x.DisplayName == bi.DisplayName))
                 {
-                    var files = (from x in GlobalVariables.backgroundImage where x.DisplayName == bi.DisplayName select x).ToList();
+                    var files = (from x in GlobalVariables.BackgroundImage where x.DisplayName == bi.DisplayName select x).ToList();
                     foreach (var item in files)
                     {
-                        GlobalVariables.backgroundImage.Remove(item);
+                        GlobalVariables.BackgroundImage.Remove(item);
                     }
                 }
 

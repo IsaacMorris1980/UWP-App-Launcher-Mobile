@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using appLauncher.Core.Models;
 using appLauncher.Core.Helpers;
 using appLauncher.Pages;
+using appLauncher.Core.Pages;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -52,7 +53,7 @@ namespace appLauncher.Core.Control
             //{
             //	SwitchedToThisPage();
             //}
-         GridViewMain.ItemsSource =   GlobalVariables.allApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
+         GridViewMain.ItemsSource =   GlobalVariables.AllApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
 
         }
 
@@ -60,7 +61,7 @@ namespace appLauncher.Core.Control
 		{
 			ProgressRing.IsActive = false;
 			dispatcher.Stop();
-            GridViewMain.ItemsSource =GlobalVariables.allApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
+            GridViewMain.ItemsSource =GlobalVariables.AllApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
 		}
 		public void SwitchedToThisPage()
 		{
@@ -69,7 +70,7 @@ namespace appLauncher.Core.Control
             //    ProgressRing.IsActive = true;
             //    dispatcher.Start();
             //}
-            GridViewMain.ItemsSource = GlobalVariables.allApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
+            GridViewMain.ItemsSource = GlobalVariables.AllApps.Skip(GlobalVariables.pagenum * GlobalVariables.appsperscreen).Take(GlobalVariables.appsperscreen).ToList();
         }
 
 		public void SwitchedFromThisPage()
@@ -84,7 +85,7 @@ namespace appLauncher.Core.Control
             var source = sender;
             e.Data.Properties.Add("item", item);
             GlobalVariables.itemdragged = (AppTile)item;
-            GlobalVariables.oldindex = GlobalVariables.allApps.IndexOf((AppTile)item);
+            GlobalVariables.oldindex = GlobalVariables.AllApps.IndexOf((AppTile)item);
         }
 
         private void GridViewMain_Drop(object sender, DragEventArgs e)
@@ -108,8 +109,8 @@ namespace appLauncher.Core.Control
             int indexy = Math.Min(view.Items.Count - 1, (int)(pos.X / itemwidth));
             var t = (List<AppTile>)view.ItemsSource;
             var te = t[((index * GlobalVariables.columns) + (indexy))];
-            GlobalVariables.newindex = GlobalVariables.allApps.IndexOf(te);
-            GlobalVariables.allApps.Move(GlobalVariables.oldindex,GlobalVariables.newindex);
+            GlobalVariables.newindex = GlobalVariables.AllApps.IndexOf(te);
+            GlobalVariables.AllApps.Move(GlobalVariables.oldindex,GlobalVariables.newindex);
           GlobalVariables.pagenum = (int)this.DataContext;
             SwitchedToThisPage();
           ((Window.Current.Content as Frame).Content as MainPage).UpdateIndicator(GlobalVariables.pagenum);

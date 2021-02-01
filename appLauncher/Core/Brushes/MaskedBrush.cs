@@ -23,7 +23,7 @@ namespace appLauncher.Core.Brushes
             base.FallbackColor = Colors.Transparent;
 
         }
-        private IRandomAccessStream stream;
+        private readonly IRandomAccessStream stream;
         private CompositionMaskBrush _maskedbrush;
         public Color overlaycolor { get; set; }
         protected override void OnConnected()
@@ -32,7 +32,7 @@ namespace appLauncher.Core.Brushes
             Compositor compositor = Window.Current.Compositor;
             CompositionColorBrush colorbrush;
             // Use LoadedImageSurface API to get ICompositionSurface from image uri provided
-            colorbrush = compositor.CreateColorBrush((overlaycolor == null) ? this.FallbackColor : overlaycolor);
+            colorbrush = compositor.CreateColorBrush((overlaycolor == Colors.Transparent) ? Colors.Transparent : overlaycolor);
             _maskedbrush = compositor.CreateMaskBrush();
             _maskedbrush.Source = colorbrush;
 
@@ -41,6 +41,7 @@ namespace appLauncher.Core.Brushes
             CompositionBrush = _maskedbrush;
 
         }
+        
 
         protected override void OnDisconnected()
         {

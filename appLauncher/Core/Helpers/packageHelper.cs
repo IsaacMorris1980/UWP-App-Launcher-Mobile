@@ -106,7 +106,7 @@ namespace appLauncher.Core.Helpers
             {
 
                 StorageFile item = (StorageFile)await ApplicationData.Current.LocalFolder.TryGetItemAsync("collection.json");
-               GlobalVariables.allApps = JsonConvert.DeserializeObject<ObservableCollection<AppTile>>(await FileIO.ReadTextAsync(item));
+               GlobalVariables.AllApps = JsonConvert.DeserializeObject<ObservableCollection<AppTile>>(await FileIO.ReadTextAsync(item));
             }
             else
             {
@@ -129,7 +129,7 @@ namespace appLauncher.Core.Helpers
                                 IRandomAccessStreamWithContentType whatIWant = await logoStream.OpenReadAsync();
                                 byte[] buffer = new byte[whatIWant.Size];
                                 await whatIWant.ReadAsync(buffer.AsBuffer(), (uint)whatIWant.Size, InputStreamOptions.None);
-                                GlobalVariables.allApps.Add(new AppTile
+                                GlobalVariables.AllApps.Add(new AppTile
                                 {
                                     AppDeveloper = p.Id.Publisher,
                                     AppFullName = p.Id.FullName,
@@ -137,8 +137,9 @@ namespace appLauncher.Core.Helpers
                                     AppLogo = buffer,
                                     AppName = singleAppListEntries.DisplayInfo.DisplayName,
                                     AppTileBackgroundcolor = Colors.Blue,
-                                    AppTileForgroundcolor = Colors.White,
-                                    AppTileOpacity = 1
+                                    AppTileForgroundcolor = Colors.Black,
+                                    AppTileTextColor = Colors.Red,
+                                    AppTileOpacity = .50
                                 });
 
                             }
